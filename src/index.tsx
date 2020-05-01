@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Elm } from "./Elm/Main";
 
 export default function App() {
   const [count, setCount] = React.useState(0);
@@ -18,12 +19,16 @@ interface ComponentProps {
 }
 
 function ElmComponent({ count, setCount }: ComponentProps) {
-  return (
-    <div>
-      <h2>This is (not yet) an Elm component</h2>
-      <div>To be implemented</div>
-    </div>
-  );
+  const [app, setApp] = React.useState<Elm.Main.App | undefined>();
+  const elmRef = React.useRef(null);
+
+  const elmApp = () => Elm.Main.init({ node: elmRef.current, flags: null });
+
+  React.useEffect(() => {
+    setApp(elmApp());
+  }, []);
+
+  return <div ref={elmRef}></div>;
 }
 
 function ReactComponent({ count, setCount }: ComponentProps) {
