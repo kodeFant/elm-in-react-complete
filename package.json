@@ -16,6 +16,7 @@
     "parcel-bundler": "^1.12.4"
   },
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "ts-interop": "npx elm-typescript-interop"
   }
 }

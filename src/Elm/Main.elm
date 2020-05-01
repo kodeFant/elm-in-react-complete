@@ -1,11 +1,18 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Html exposing (..)
 import Html.Events exposing (onClick)
 
 
-main : Program () Model Msg
+port updateCountInReact : Int -> Cmd msg
+
+
+type alias Flags =
+    Int
+
+
+main : Program Flags Model Msg
 main =
     Browser.element
         { init = init
@@ -15,9 +22,9 @@ main =
         }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( 0, Cmd.none )
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( flags, Cmd.none )
 
 
 type alias Model =
@@ -38,10 +45,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Increment step ->
-            ( model + step, Cmd.none )
+            ( model + step, updateCountInReact (model + step) )
 
         Decrement step ->
-            ( model - step, Cmd.none )
+            ( model - step, updateCountInReact (model - step) )
 
 
 view : Model -> Html Msg
